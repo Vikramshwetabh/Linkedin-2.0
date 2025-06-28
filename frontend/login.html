@@ -4,18 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Verified Job Platform</title>
+    <title>Login - Finnger</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        primary: '#6366F1',
-                        secondary: '#4F46E5',
-                        accent: '#8B5CF6',
-                        dark: '#1E1B4B',
-                        light: '#F8FAFC'
+                        primary: '#7c3aed', // purple-600
+                        accent: '#a78bfa', // purple-400
+                        light: '#f8fafc',
+                        dark: '#18181b',
+                        graybg: '#f3f4f6' // gray-100
                     }
                 }
             }
@@ -23,145 +23,116 @@
     </script>
 </head>
 
-<body class="bg-gradient-to-br from-indigo-50 via-white to-purple-50 min-h-screen">
-    <!-- Navigation -->
-    <nav class="bg-white/80 backdrop-blur-md shadow-lg border-b border-indigo-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <a href="index.html" class="flex items-center space-x-3">
-                        <div
-                            class="w-10 h-10 bg-gradient-to-r from-primary to-accent rounded-lg flex items-center justify-center">
-                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6a2 2 0 01-2 2H8a2 2 0 01-2-2V8a2 2 0 012-2V6">
-                                </path>
-                            </svg>
-                        </div>
-                        <span
-                            class="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Verified
-                            Job Platform</span>
-                    </a>
+<body class="bg-graybg min-h-screen flex items-center justify-center">
+    <div class="w-full min-h-screen flex items-center justify-center">
+        <div
+            class="w-full max-w-5xl bg-white rounded-3xl shadow-xl flex flex-col md:flex-row overflow-hidden border border-gray-200">
+            <!-- Left: Login Form -->
+            <div class="w-full md:w-1/2 flex flex-col justify-center px-10 py-12">
+                <!-- Logo -->
+                <div class="flex items-center mb-10">
+                    <span class="inline-block w-4 h-4 rounded bg-primary mr-2"></span>
+                    <span class="font-semibold text-primary text-lg">Jobber</span>
                 </div>
-                <div class="flex items-center space-x-4">
-                    <a href="register.html"
-                        class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">Register</a>
+                <!-- Headline -->
+                <h1 class="text-4xl font-extrabold text-gray-900 mb-2">Holla Amigo,<br>Welcome Back</h1>
+                <p class="text-gray-400 mb-8">Hey, welcome back to your special place</p>
+                <!-- Login Form -->
+                <form class="space-y-4" id="loginForm">
+                    <div>
+                        <input id="email" name="email" type="email" required
+                            class="w-full px-4 py-2 border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-primary text-gray-900"
+                            placeholder="stanley@gmail.com">
+                    </div>
+                    <div>
+                        <input id="password" name="password" type="password" required
+                            class="w-full px-4 py-2 border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-primary text-gray-900"
+                            placeholder="••••••••••••">
+                    </div>
+                    <div class="flex items-center justify-between text-sm">
+                        <label class="flex items-center">
+                            <input type="checkbox" class="form-checkbox text-primary mr-2">
+                            <span class="text-primary">Remember me</span>
+                        </label>
+                        <a href="#" class="text-gray-400 hover:text-primary transition">Forgot Password?</a>
+                    </div>
+                    <button type="submit"
+                        class="w-full bg-primary text-white py-2 rounded font-semibold text-lg mt-2 hover:bg-purple-700 transition">Sign
+                        In</button>
+                    <div id="message" class="hidden text-center text-sm font-medium rounded-lg p-3"></div>
+                </form>
+                <div class="mt-8 text-center text-gray-400 text-sm">
+                    Don't have an account? <a href="register.html" class="text-primary font-medium hover:underline">Sign
+                        Up</a>
                 </div>
             </div>
-        </div>
-    </nav>
-
-    <!-- Login Form -->
-    <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-md w-full space-y-8">
-            <div class="text-center">
-                <div
-                    class="mx-auto w-20 h-20 bg-gradient-to-r from-primary to-accent rounded-full flex items-center justify-center mb-6">
-                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+            <!-- Right: Illustration & Gradient -->
+            <div
+                class="hidden md:flex w-1/2 items-center justify-center bg-gradient-to-br from-primary via-accent to-primary relative">
+                <div class="flex flex-1 items-center justify-center w-full h-full">
+                    <!-- SVG Illustration Placeholder -->
+                    <svg width="380" height="380" viewBox="0 0 380 380" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#a78bfa" />
+                                <stop offset="100%" stop-color="#7c3aed" />
+                            </linearGradient>
+                        </defs>
+                        <rect width="380" height="380" rx="36" fill="url(#bgGrad)" />
+                        <!-- Clouds -->
+                        <ellipse cx="320" cy="60" rx="40" ry="18" fill="#fff" fill-opacity="0.9" />
+                        <ellipse cx="60" cy="340" rx="30" ry="13" fill="#fff" fill-opacity="0.9" />
+                        <ellipse cx="350" cy="350" rx="25" ry="10" fill="#fff" fill-opacity="0.9" />
+                        <ellipse cx="100" cy="60" rx="30" ry="12" fill="#fff" fill-opacity="0.9" />
+                        <!-- Phone -->
+                        <rect x="170" y="70" width="120" height="200" rx="28" fill="#fff" stroke="#7c3aed"
+                            stroke-width="4" />
+                        <ellipse cx="230" cy="110" rx="22" ry="7" fill="#ede9fe" />
+                        <!-- Fingerprint -->
+                        <ellipse cx="230" cy="170" rx="28" ry="28" fill="#ede9fe" />
+                        <path d="M230 190c-10 0-18-8-18-18s8-18 18-18 18 8 18 18" stroke="#a78bfa" stroke-width="3"
+                            fill="none" />
+                        <path d="M230 200c-15 0-26-11-26-26s11-26 26-26 26 11 26 26" stroke="#a78bfa" stroke-width="2"
+                            fill="none" />
+                        <!-- Person -->
+                        <ellipse cx="180" cy="260" rx="16" ry="7" fill="#a78bfa" />
+                        <rect x="160" y="200" width="32" height="50" rx="12" fill="#fde68a" />
+                        <rect x="170" y="180" width="16" height="24" rx="8" fill="#fbbf24" />
+                        <rect x="180" y="170" width="16" height="8" rx="4" fill="#fbbf24" />
+                        <rect x="190" y="230" width="24" height="8" rx="4" fill="#7c3aed" />
+                        <!-- Padlock -->
+                        <rect x="270" y="200" width="32" height="40" rx="8" fill="#fff" stroke="#7c3aed"
+                            stroke-width="3" />
+                        <rect x="282" y="190" width="8" height="16" rx="4" fill="#fff" stroke="#7c3aed"
+                            stroke-width="2" />
+                        <circle cx="288" cy="220" r="5" fill="#a78bfa" />
+                        <!-- Checkmark bubble -->
+                        <ellipse cx="270" cy="120" rx="22" ry="12" fill="#fff" />
+                        <path d="M262 120l6 6 10-12" stroke="#7c3aed" stroke-width="3" fill="none" />
                     </svg>
                 </div>
-                <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                    Welcome back
-                </h2>
-                <p class="mt-2 text-center text-sm text-gray-600">
-                    Or
-                    <a href="register.html" class="font-medium text-primary hover:text-accent transition-colors">
-                        create a new account
-                    </a>
-                </p>
-            </div>
-            <form class="mt-8 space-y-6" id="loginForm">
-                <div class="space-y-4">
-                    <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email address</label>
-                        <input id="email" name="email" type="email" required
-                            class="appearance-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary focus:z-10 sm:text-sm transition-all duration-200"
-                            placeholder="Enter your email">
-                    </div>
-                    <div>
-                        <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
-                        <input id="password" name="password" type="password" required
-                            class="appearance-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary focus:z-10 sm:text-sm transition-all duration-200"
-                            placeholder="Enter your password">
-                    </div>
-                </div>
-
-                <div>
-                    <button type="submit"
-                        class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-primary to-accent hover:from-secondary hover:to-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-300 shadow-lg hover:shadow-xl">
-                        <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-                            <svg class="h-5 w-5 text-indigo-200 group-hover:text-indigo-100" fill="none"
-                                stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
-                                </path>
-                            </svg>
-                        </span>
-                        Sign in
-                    </button>
-                </div>
-
-                <div id="message" class="hidden text-center text-sm font-medium rounded-lg p-3"></div>
-            </form>
-
-            <!-- Decorative elements -->
-            <div class="relative">
-                <div class="absolute inset-0 flex items-center">
-                    <div class="w-full border-t border-gray-300"></div>
-                </div>
-                <div class="relative flex justify-center text-sm">
-                    <span class="px-2 bg-gradient-to-br from-indigo-50 via-white to-purple-50 text-gray-500">Secure
-                        login</span>
-                </div>
             </div>
         </div>
     </div>
-
-    <!-- Background decoration -->
-    <div class="fixed inset-0 -z-10 overflow-hidden">
-        <div
-            class="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full blur-3xl">
-        </div>
-        <div
-            class="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-accent/20 to-primary/20 rounded-full blur-3xl">
-        </div>
-    </div>
-
     <script>
         document.getElementById('loginForm').addEventListener('submit', async function (e) {
             e.preventDefault();
-
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const messageDiv = document.getElementById('message');
-
             try {
-                const response = await fetch('/login', {
+                const response = await fetch('http://localhost:8080/login', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        email: email,
-                        password: password
-                    })
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
                 });
-
                 const data = await response.json();
-
                 messageDiv.className = 'text-center text-sm font-medium rounded-lg p-3';
-
                 if (data.success) {
                     messageDiv.className += ' bg-green-100 text-green-800 border border-green-200';
                     messageDiv.textContent = 'Login successful! Redirecting...';
-
-                    // Store user data and token
                     localStorage.setItem('user', JSON.stringify(data.data.user));
                     localStorage.setItem('token', data.data.token);
-
-                    // Redirect based on user role
                     setTimeout(() => {
                         if (data.data.user.role === 'recruiter') {
                             window.location.href = 'recruiter-dashboard.html';
@@ -173,7 +144,6 @@
                     messageDiv.className += ' bg-red-100 text-red-800 border border-red-200';
                     messageDiv.textContent = data.error || 'Login failed';
                 }
-
                 messageDiv.classList.remove('hidden');
             } catch (error) {
                 messageDiv.className = 'text-center text-sm font-medium rounded-lg p-3 bg-red-100 text-red-800 border border-red-200';

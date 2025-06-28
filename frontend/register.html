@@ -4,18 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - Verified Job Platform</title>
+    <title>Sign Up - Verified Job Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        primary: '#6366F1',
-                        secondary: '#4F46E5',
-                        accent: '#8B5CF6',
-                        dark: '#1E1B4B',
-                        light: '#F8FAFC'
+                        primary: '#6366f1', // indigo-500
+                        accent: '#818cf8', // indigo-400
+                        light: '#f8fafc',
+                        bluebg: '#e0e7ff', // indigo-100
+                        graybg: '#f3f4f6', // gray-100
+                        dark: '#18181b'
                     }
                 }
             }
@@ -23,186 +24,214 @@
     </script>
 </head>
 
-<body class="bg-gradient-to-br from-indigo-50 via-white to-purple-50 min-h-screen">
-    <!-- Navigation -->
-    <nav class="bg-white/80 backdrop-blur-md shadow-lg border-b border-indigo-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <a href="index.html" class="flex items-center space-x-3">
-                        <div
-                            class="w-10 h-10 bg-gradient-to-r from-primary to-accent rounded-lg flex items-center justify-center">
-                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6a2 2 0 01-2 2H8a2 2 0 01-2-2V8a2 2 0 012-2V6">
-                                </path>
+<body class="bg-bluebg min-h-screen flex items-center justify-center">
+    <div class="w-full min-h-screen flex items-center justify-center">
+        <div
+            class="w-full max-w-5xl bg-white rounded-3xl shadow-xl flex flex-col md:flex-row overflow-hidden border border-gray-200">
+            <!-- Left: Sign Up Form -->
+            <div class="w-full md:w-1/2 flex flex-col justify-between px-10 py-12">
+                <div>
+                    <div class="flex justify-between items-center mb-8">
+                        <a href="#" class="text-gray-400 hover:text-primary transition text-xl font-bold">&#8592;</a>
+                        <span class="text-sm text-gray-500">Already member? <a href="login.html"
+                                class="text-primary font-semibold hover:underline">Sign in</a></span>
+                    </div>
+                    <h1 class="text-3xl font-extrabold text-gray-900 mb-2">Sign Up</h1>
+                    <p class="text-gray-400 mb-8">Secure Your Communications with Easymail</p>
+                    <form class="space-y-4" id="registerForm">
+                        <div class="relative">
+                            <span class="absolute left-3 top-3 text-gray-400">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5.121 17.804A13.937 13.937 0 0112 15c3.183 0 6.22.62 9 1.745M15 11a4 4 0 11-8 0 4 4 0 018 0z" />
+                                </svg>
+                            </span>
+                            <input id="name" name="name" type="text" required placeholder="Full Name"
+                                class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-primary text-gray-900 bg-blue-50">
+                        </div>
+                        <div class="relative">
+                            <span class="absolute left-3 top-3 text-gray-400">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M16 12H8m8 0a4 4 0 11-8 0 4 4 0 018 0z" />
+                                </svg>
+                            </span>
+                            <input id="email" name="email" type="email" required placeholder="Email Address"
+                                class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-primary text-gray-900 bg-blue-50">
+                        </div>
+                        <div class="relative">
+                            <span class="absolute left-3 top-3 text-gray-400">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 11c0-1.104-.896-2-2-2s-2 .896-2 2m8 0c0-1.104-.896-2-2-2s-2 .896-2 2m-2 4h8" />
+                                </svg>
+                            </span>
+                            <input id="password" name="password" type="password" required placeholder="Password"
+                                class="w-full pl-10 pr-10 py-2 border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-primary text-gray-900 bg-blue-50"
+                                oninput="validatePassword()">
+                            <span class="absolute right-3 top-3 text-gray-400 cursor-pointer"
+                                onclick="togglePassword()">
+                                <svg id="eyeIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                </svg>
+                            </span>
+                        </div>
+                        <div class="relative">
+                            <span class="absolute left-3 top-3 text-gray-400">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 11c0-1.104-.896-2-2-2s-2 .896-2 2m8 0c0-1.104-.896-2-2-2s-2 .896-2 2m-2 4h8" />
+                                </svg>
+                            </span>
+                            <input id="retype" name="retype" type="password" required placeholder="Re-Type Password"
+                                class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-primary text-gray-900 bg-blue-50">
+                        </div>
+                        <!-- Role selection -->
+                        <div class="relative">
+                            <label for="role" class="block text-sm font-medium text-gray-700 mb-1">I want to:</label>
+                            <select id="role" name="role" required
+                                class="w-full pl-3 pr-4 py-2 border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-primary text-gray-900 bg-blue-50">
+                                <option value="jobseeker">Find a job</option>
+                                <option value="recruiter">Post a job</option>
+                            </select>
+                        </div>
+                        <ul class="text-xs mt-2 mb-4 space-y-1">
+                            <li id="pw-length" class="text-gray-400 flex items-center"><span
+                                    class="mr-1">&#10003;</span> Least 8 characters</li>
+                            <li id="pw-number" class="text-gray-400 flex items-center"><span
+                                    class="mr-1">&#10003;</span> Least one number (0-9) or a symbol</li>
+                            <li id="pw-case" class="text-gray-400 flex items-center"><span class="mr-1">&#10003;</span>
+                                Lowercase (a-z) and uppercase (A-Z)</li>
+                        </ul>
+                        <button type="submit"
+                            class="w-full bg-gradient-to-r from-primary to-accent text-white py-2 rounded-lg font-semibold text-lg mt-2 hover:from-accent hover:to-primary transition flex items-center justify-center">Sign
+                            Up</button>
+                        <div class="flex items-center justify-center mt-4 space-x-4">
+                            <span class="text-gray-400 text-sm">Or</span>
+                            <button type="button"
+                                class="bg-white border border-gray-200 rounded-full p-2 shadow hover:bg-gray-50"><img
+                                    src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png"
+                                    alt="Facebook" class="w-5 h-5"></button>
+                            <button type="button"
+                                class="bg-white border border-gray-200 rounded-full p-2 shadow hover:bg-gray-50"><img
+                                    src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+                                    alt="Google" class="w-5 h-5"></button>
+                        </div>
+                        <div id="message" class="hidden text-center text-sm font-medium rounded-lg p-3 mt-4"></div>
+                    </form>
+                </div>
+                <div class="flex items-center justify-between mt-8 text-xs text-gray-400">
+                    <span class="flex items-center"><img
+                            src="https://upload.wikimedia.org/wikipedia/commons/0/03/Flag_of_England.svg"
+                            class="w-5 h-5 mr-1"> ENG</span>
+                </div>
+            </div>
+            <!-- Right: Illustration & Cards -->
+            <div
+                class="hidden md:flex w-1/2 items-center justify-center bg-gradient-to-br from-primary via-accent to-primary relative">
+                <div class="flex flex-col items-center justify-center w-full h-full space-y-8">
+                    <!-- Card 1: Inbox -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 w-56 flex flex-col items-center mb-4">
+                        <span class="text-xs text-gray-400 mb-2">Inbox</span>
+                        <span class="text-2xl font-bold text-gray-900 mb-2">176,18</span>
+                        <div class="w-full h-12 flex items-center justify-center">
+                            <svg width="80" height="32" viewBox="0 0 80 32" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <polyline points="0,30 20,10 40,20 60,5 80,25" stroke="#6366f1" stroke-width="3"
+                                    fill="none" />
+                                <circle cx="45" cy="16" r="8" fill="#fff" stroke="#6366f1" stroke-width="2" />
+                                <text x="42" y="21" font-size="10" fill="#6366f1">45</text>
                             </svg>
                         </div>
-                        <span
-                            class="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Verified
-                            Job Platform</span>
-                    </a>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <a href="login.html"
-                        class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">Login</a>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Register Form -->
-    <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-md w-full space-y-8">
-            <div class="text-center">
-                <div
-                    class="mx-auto w-20 h-20 bg-gradient-to-r from-primary to-accent rounded-full flex items-center justify-center mb-6">
-                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z">
-                        </path>
-                    </svg>
-                </div>
-                <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                    Join our platform
-                </h2>
-                <p class="mt-2 text-center text-sm text-gray-600">
-                    Or
-                    <a href="login.html" class="font-medium text-primary hover:text-accent transition-colors">
-                        sign in to your existing account
-                    </a>
-                </p>
-            </div>
-            <form class="mt-8 space-y-6" id="registerForm">
-                <div class="space-y-4">
-                    <div>
-                        <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
-                        <input id="name" name="name" type="text" required
-                            class="appearance-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary focus:z-10 sm:text-sm transition-all duration-200"
-                            placeholder="Enter your full name">
                     </div>
-                    <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email address</label>
-                        <input id="email" name="email" type="email" required
-                            class="appearance-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary focus:z-10 sm:text-sm transition-all duration-200"
-                            placeholder="Enter your email">
-                    </div>
-                    <div>
-                        <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
-                        <input id="password" name="password" type="password" required
-                            class="appearance-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary focus:z-10 sm:text-sm transition-all duration-200"
-                            placeholder="Create a password">
-                    </div>
-                    <div>
-                        <label for="role" class="block text-sm font-medium text-gray-700 mb-2">I want to</label>
-                        <select id="role" name="role" required
-                            class="appearance-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary focus:z-10 sm:text-sm transition-all duration-200">
-                            <option value="">Select your role</option>
-                            <option value="jobseeker">Find a job</option>
-                            <option value="recruiter">Hire talent</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div>
-                    <button type="submit"
-                        class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-primary to-accent hover:from-secondary hover:to-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-300 shadow-lg hover:shadow-xl">
-                        <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-                            <svg class="h-5 w-5 text-indigo-200 group-hover:text-indigo-100" fill="none"
-                                stroke="currentColor" viewBox="0 0 24 24">
+                    <!-- Card 2: Data/Key -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 w-56 flex flex-col items-start">
+                        <div class="flex items-center mb-2">
+                            <svg class="w-5 h-5 text-primary mr-2" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                    d="M12 15v2m0 0a4 4 0 01-4-4V7a4 4 0 018 0v6a4 4 0 01-4 4z" />
                             </svg>
-                        </span>
-                        Create Account
-                    </button>
-                </div>
-
-                <div id="message" class="hidden text-center text-sm font-medium rounded-lg p-3"></div>
-            </form>
-
-            <!-- Decorative elements -->
-            <div class="relative">
-                <div class="absolute inset-0 flex items-center">
-                    <div class="w-full border-t border-gray-300"></div>
-                </div>
-                <div class="relative flex justify-center text-sm">
-                    <span class="px-2 bg-gradient-to-br from-indigo-50 via-white to-purple-50 text-gray-500">Join
-                        thousands of users</span>
+                            <span class="font-semibold text-gray-900">Your data, your rules</span>
+                        </div>
+                        <span class="text-xs text-gray-500">Your data belongs to you, and our encryption ensures
+                            that</span>
+                    </div>
+                    <!-- Social Icons -->
+                    <div class="flex space-x-4 mt-4">
+                        <span class="bg-white rounded-full p-2 shadow"><img
+                                src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png"
+                                class="w-6 h-6"></span>
+                        <span class="bg-white rounded-full p-2 shadow"><img
+                                src="https://upload.wikimedia.org/wikipedia/commons/6/6f/Tiktok_Icon.png"
+                                class="w-6 h-6"></span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Background decoration -->
-    <div class="fixed inset-0 -z-10 overflow-hidden">
-        <div
-            class="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full blur-3xl">
-        </div>
-        <div
-            class="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-accent/20 to-primary/20 rounded-full blur-3xl">
-        </div>
-    </div>
-
     <script>
+        function togglePassword() {
+            const pw = document.getElementById('password');
+            const icon = document.getElementById('eyeIcon');
+            if (pw.type === 'password') {
+                pw.type = 'text';
+                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7a9.956 9.956 0 012.042-3.362m1.414-1.414A9.956 9.956 0 0112 5c4.477 0 8.268 2.943 9.542 7a9.956 9.956 0 01-1.414 2.414m-1.414 1.414A10.05 10.05 0 0112 19c-1.02 0-2.007-.153-2.925-.437" />';
+            } else {
+                pw.type = 'password';
+                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>';
+            }
+        }
+        function validatePassword() {
+            const pw = document.getElementById('password').value;
+            document.getElementById('pw-length').className = pw.length >= 8 ? 'text-green-500 flex items-center' : 'text-gray-400 flex items-center';
+            document.getElementById('pw-number').className = /[0-9!@#$%^&*]/.test(pw) ? 'text-green-500 flex items-center' : 'text-gray-400 flex items-center';
+            document.getElementById('pw-case').className = /[a-z]/.test(pw) && /[A-Z]/.test(pw) ? 'text-green-500 flex items-center' : 'text-gray-400 flex items-center';
+        }
         document.getElementById('registerForm').addEventListener('submit', async function (e) {
             e.preventDefault();
-
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
+            const retype = document.getElementById('retype').value;
             const role = document.getElementById('role').value;
             const messageDiv = document.getElementById('message');
-
-            // Basic validation
-            if (!name || !email || !password || !role) {
-                messageDiv.className = 'text-center text-sm font-medium rounded-lg p-3 bg-red-100 text-red-800 border border-red-200';
-                messageDiv.textContent = 'Please fill in all fields';
+            if (password !== retype) {
+                messageDiv.className = 'text-center text-sm font-medium rounded-lg p-3 mt-4 bg-red-100 text-red-800 border border-red-200';
+                messageDiv.textContent = 'Passwords do not match';
                 messageDiv.classList.remove('hidden');
                 return;
             }
-
-            if (password.length < 6) {
-                messageDiv.className = 'text-center text-sm font-medium rounded-lg p-3 bg-red-100 text-red-800 border border-red-200';
-                messageDiv.textContent = 'Password must be at least 6 characters long';
-                messageDiv.classList.remove('hidden');
-                return;
-            }
-
             try {
-                const response = await fetch('/register', {
+                const response = await fetch('http://localhost:8080/register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        name: name,
-                        email: email,
-                        password: password,
-                        role: role
+                        name,
+                        email,
+                        password,
+                        role
                     })
                 });
-
                 const data = await response.json();
-
-                messageDiv.className = 'text-center text-sm font-medium rounded-lg p-3';
-
                 if (data.success) {
-                    messageDiv.className += ' bg-green-100 text-green-800 border border-green-200';
-                    messageDiv.textContent = 'Registration successful! Redirecting to login...';
-
-                    // Redirect to login page
+                    messageDiv.className = 'text-center text-sm font-medium rounded-lg p-3 mt-4 bg-green-100 text-green-800 border border-green-200';
+                    messageDiv.textContent = 'Registration successful! Redirecting...';
                     setTimeout(() => {
                         window.location.href = 'login.html';
-                    }, 2000);
+                    }, 1000);
                 } else {
-                    messageDiv.className += ' bg-red-100 text-red-800 border border-red-200';
+                    messageDiv.className = 'text-center text-sm font-medium rounded-lg p-3 mt-4 bg-red-100 text-red-800 border border-red-200';
                     messageDiv.textContent = data.error || 'Registration failed';
                 }
-
                 messageDiv.classList.remove('hidden');
             } catch (error) {
-                messageDiv.className = 'text-center text-sm font-medium rounded-lg p-3 bg-red-100 text-red-800 border border-red-200';
+                messageDiv.className = 'text-center text-sm font-medium rounded-lg p-3 mt-4 bg-red-100 text-red-800 border border-red-200';
                 messageDiv.textContent = 'Network error. Please try again.';
                 messageDiv.classList.remove('hidden');
             }

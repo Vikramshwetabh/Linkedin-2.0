@@ -1,1 +1,255 @@
- 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recruiter Dashboard - Verified Job Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1', // indigo-500
+                        accent: '#818cf8', // indigo-400
+                        light: '#f8fafc',
+                        graybg: '#f3f4f6', // gray-100
+                        dark: '#18181b'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-graybg min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center space-x-3">
+                    <span class="text-2xl font-bold text-primary">VERIFIED.JOBS</span>
+                    <span class="text-xs text-gray-500">Recruiter Dashboard</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span id="userName" class="text-gray-700"></span>
+                    <button onclick="logout()" class="text-red-600 hover:text-red-800 transition">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left: Job Creation Form -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
+                    <h2 class="text-2xl font-bold text-primary mb-4">Post New Job</h2>
+                    <form id="jobForm" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Job Title</label>
+                            <input type="text" id="jobTitle" required
+                                class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-graybg">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Company</label>
+                            <input type="text" id="company" required
+                                class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-graybg">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                            <input type="text" id="location" required
+                                class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-graybg">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                            <textarea id="description" rows="4" required
+                                class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-graybg"></textarea>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Min Salary</label>
+                                <input type="number" id="salaryMin"
+                                    class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-graybg">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Max Salary</label>
+                                <input type="number" id="salaryMax"
+                                    class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-graybg">
+                            </div>
+                        </div>
+                        <button type="submit"
+                            class="w-full bg-gradient-to-r from-primary to-accent text-white py-2 rounded-lg font-semibold text-lg mt-2 hover:from-accent hover:to-primary transition flex items-center justify-center">Post
+                            Job</button>
+                    </form>
+                    <div id="jobMessage" class="hidden mt-4 p-3 rounded-md"></div>
+                </div>
+            </div>
+
+            <!-- Right: Posted Jobs -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
+                    <h2 class="text-2xl font-bold text-primary mb-4">Your Posted Jobs</h2>
+                    <div id="jobsList" class="space-y-4">
+                        <!-- Jobs will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check authentication
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        const token = localStorage.getItem('token');
+
+        if (!user.id || !token) {
+            window.location.href = 'login.html';
+        }
+
+        if (user.role !== 'recruiter') {
+            window.location.href = 'jobseeker-dashboard.html';
+        }
+
+        document.getElementById('userName').textContent = `Welcome, ${user.name}`;
+
+        // Load posted jobs
+        loadJobs();
+
+        // Job creation form
+        document.getElementById('jobForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const jobData = {
+                title: document.getElementById('jobTitle').value,
+                company: document.getElementById('company').value,
+                location: document.getElementById('location').value,
+                description: document.getElementById('description').value,
+                salary_min: parseInt(document.getElementById('salaryMin').value) || null,
+                salary_max: parseInt(document.getElementById('salaryMax').value) || null
+            };
+
+            try {
+                const response = await fetch('http://localhost:8080/jobs', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(jobData)
+                });
+
+                const data = await response.json();
+                const messageDiv = document.getElementById('jobMessage');
+
+                if (data.success) {
+                    messageDiv.className = 'mt-4 p-3 rounded-md bg-green-100 text-green-800';
+                    messageDiv.textContent = 'Job posted successfully!';
+                    document.getElementById('jobForm').reset();
+                    loadJobs(); // Reload jobs list
+                } else {
+                    messageDiv.className = 'mt-4 p-3 rounded-md bg-red-100 text-red-800';
+                    messageDiv.textContent = data.error || 'Failed to post job';
+                }
+                messageDiv.classList.remove('hidden');
+            } catch (error) {
+                const messageDiv = document.getElementById('jobMessage');
+                messageDiv.className = 'mt-4 p-3 rounded-md bg-red-100 text-red-800';
+                messageDiv.textContent = 'Network error. Please try again.';
+                messageDiv.classList.remove('hidden');
+            }
+        });
+
+        async function loadJobs() {
+            try {
+                const response = await fetch('http://localhost:8080/jobs', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    displayJobs(data.data);
+                }
+            } catch (error) {
+                console.error('Failed to load jobs:', error);
+            }
+        }
+
+        function displayJobs(jobs) {
+            const jobsList = document.getElementById('jobsList');
+            jobsList.innerHTML = '';
+
+            if (jobs.length === 0) {
+                jobsList.innerHTML = '<p class="text-gray-500 text-center py-8">No jobs posted yet.</p>';
+                return;
+            }
+
+            jobs.forEach(job => {
+                const jobCard = document.createElement('div');
+                jobCard.className = 'border border-gray-200 rounded-xl p-6 bg-light hover:shadow-lg transition';
+                jobCard.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="text-lg font-semibold text-primary">${job.title}</h3>
+                            <p class="text-gray-600">${job.company} • ${job.location}</p>
+                            <p class="text-sm text-gray-500 mt-2">${job.description.substring(0, 150)}${job.description.length > 150 ? '...' : ''}</p>
+                            ${job.salary_min || job.salary_max ? `<p class="text-sm text-green-600 mt-1">$${job.salary_min || 'N/A'} - $${job.salary_max || 'N/A'}</p>` : ''}
+                        </div>
+                        <button onclick="viewApplications(${job.id})" class="bg-gradient-to-r from-primary to-accent text-white px-4 py-2 rounded-lg hover:from-accent hover:to-primary transition">
+                            View Applications
+                        </button>
+                    </div>
+                    <div id="applications-${job.id}" class="mt-4 hidden"></div>
+                `;
+                jobsList.appendChild(jobCard);
+            });
+        }
+
+        async function viewApplications(jobId) {
+            const container = document.getElementById(`applications-${jobId}`);
+            if (!container) return;
+            if (!container.classList.contains('hidden')) {
+                container.classList.add('hidden');
+                container.innerHTML = '';
+                return;
+            }
+            container.classList.remove('hidden');
+            container.innerHTML = '<div class="text-gray-500">Loading applications...</div>';
+            try {
+                const response = await fetch(`http://localhost:8080/jobs/applications?job_id=${jobId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                const data = await response.json();
+                if (data.success && data.data.length > 0) {
+                    container.innerHTML = data.data.map(app => `
+                        <div class="bg-white border border-gray-200 rounded-lg p-4 mb-2">
+                            <div class="font-semibold text-primary">${app.name || (app.applicant && app.applicant.name) || 'N/A'}</div>
+                            <div class="text-sm text-gray-700">Mobile: ${app.mobile || 'N/A'}</div>
+                            <div class="text-sm text-gray-700">Email: ${app.email || (app.applicant && app.applicant.email) || 'N/A'}</div>
+                            <div class="text-sm text-gray-700">Resume: ${app.resume_url ? `<a href="${app.resume_url}" class="text-primary underline" target="_blank">View</a>` : 'N/A'}</div>
+                            <div class="text-sm text-gray-700 mt-2"><span class="font-semibold">Cover Letter:</span><br>${app.cover_letter || 'N/A'}</div>
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = '<div class="text-gray-500">No applications yet.</div>';
+                }
+            } catch (error) {
+                container.innerHTML = '<div class="text-red-600">Failed to load applications.</div>';
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('user');
+            localStorage.removeItem('token');
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+
+</html>

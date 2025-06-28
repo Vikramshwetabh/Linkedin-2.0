@@ -23,6 +23,7 @@ type Job struct {
 	SalaryMax   *int      `json:"salary_max,omitempty"`
 	RecruiterID int       `json:"recruiter_id"`
 	CreatedAt   time.Time `json:"created_at"`
+	Disabled    bool      `json:"disabled"`
 }
 
 // Application represents a job application
@@ -85,4 +86,13 @@ type APIResponse struct {
 	Message string      `json:"message,omitempty"`
 	Data    interface{} `json:"data,omitempty"`
 	Error   string      `json:"error,omitempty"`
+}
+
+// JobRating represents a user's rating for a job
+// Rating: 'genuine' or 'scam'
+type JobRating struct {
+	ID     int    `json:"id"`
+	JobID  int    `json:"job_id"`
+	UserID int    `json:"user_id"`
+	Rating string `json:"rating"`
 }

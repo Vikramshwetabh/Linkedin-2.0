@@ -11,8 +11,11 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#3B82F6',
-                        secondary: '#1E40AF'
+                        primary: '#6366f1', // indigo-500
+                        accent: '#818cf8', // indigo-400
+                        light: '#f8fafc',
+                        graybg: '#f3f4f6', // gray-100
+                        dark: '#18181b'
                     }
                 }
             }
@@ -20,9 +23,9 @@
     </script>
 </head>
 
-<body class="bg-gray-50">
+<body class="bg-graybg">
     <!-- Navigation -->
-    <nav class="bg-white shadow-lg">
+    <nav class="bg-white shadow-lg border-b border-gray-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
@@ -30,8 +33,7 @@
                 </div>
                 <div class="flex items-center space-x-4">
                     <span id="userName" class="text-gray-700"></span>
-                    <button onclick="logout()"
-                        class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium">Logout</button>
+                    <button onclick="logout()" class="text-red-600 hover:text-red-800 transition">Logout</button>
                 </div>
             </div>
         </div>
@@ -41,15 +43,16 @@
     <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <!-- Header -->
         <div class="px-4 py-6 sm:px-0">
-            <h1 class="text-3xl font-bold text-gray-900">Job Seeker Dashboard</h1>
+            <h1 class="text-3xl font-bold text-primary">Job Seeker Dashboard</h1>
             <p class="mt-2 text-gray-600">Browse and apply to available job opportunities</p>
         </div>
 
         <!-- Job Listings -->
         <div class="px-4 py-6 sm:px-0">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-semibold text-gray-900">Available Jobs</h2>
-                <button onclick="loadJobs()" class="bg-primary text-white px-4 py-2 rounded-md hover:bg-secondary">
+                <h2 class="text-2xl font-semibold text-primary">Available Jobs</h2>
+                <button onclick="loadJobs()"
+                    class="bg-gradient-to-r from-primary to-accent text-white px-4 py-2 rounded-lg hover:from-accent hover:to-primary transition">
                     Refresh Jobs
                 </button>
             </div>
@@ -67,32 +70,49 @@
 
     <!-- Application Modal -->
     <div id="applicationModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full">
-        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-2xl bg-white">
             <div class="mt-3">
-                <h3 class="text-lg font-medium text-gray-900 mb-4">Apply for Job</h3>
+                <h3 class="text-lg font-bold text-primary mb-4">Apply for Job</h3>
                 <form id="applicationForm">
                     <div class="mb-4">
-                        <label for="coverLetter" class="block text-sm font-medium text-gray-700 mb-2">Cover
-                            Letter</label>
-                        <textarea id="coverLetter" rows="4"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary focus:border-primary"
-                            placeholder="Write a brief cover letter explaining why you're interested in this position..."></textarea>
+                        <label for="applicantName" class="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                        <input type="text" id="applicantName"
+                            class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-primary focus:border-primary bg-graybg"
+                            required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="applicantMobile" class="block text-sm font-medium text-gray-700 mb-2">Mobile
+                            Number</label>
+                        <input type="tel" id="applicantMobile"
+                            class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-primary focus:border-primary bg-graybg"
+                            required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="applicantEmail" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                        <input type="email" id="applicantEmail"
+                            class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-primary focus:border-primary bg-graybg"
+                            required>
                     </div>
                     <div class="mb-4">
                         <label for="resumeUrl" class="block text-sm font-medium text-gray-700 mb-2">Resume URL
                             (optional)</label>
                         <input type="url" id="resumeUrl"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary focus:border-primary"
+                            class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-primary focus:border-primary bg-graybg"
                             placeholder="https://example.com/resume.pdf">
                     </div>
-                    <div class="flex justify-end space-x-3">
+                    <div class="mb-4">
+                        <label for="coverLetter" class="block text-sm font-medium text-gray-700 mb-2">Cover
+                            Letter</label>
+                        <textarea id="coverLetter" rows="4"
+                            class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-primary focus:border-primary bg-graybg"
+                            placeholder="Write a brief cover letter explaining why you're interested in this position..."></textarea>
+                    </div>
+                    <div class="flex justify-end space-x-2">
                         <button type="button" onclick="closeApplicationModal()"
-                            class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300">
-                            Cancel
-                        </button>
-                        <button type="submit" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-secondary">
-                            Submit Application
-                        </button>
+                            class="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">Cancel</button>
+                        <button type="submit"
+                            class="px-4 py-2 bg-gradient-to-r from-primary to-accent text-white rounded-lg hover:from-accent hover:to-primary transition">Submit
+                            Application</button>
                     </div>
                 </form>
             </div>
@@ -133,8 +153,7 @@
             loadingMessage.classList.remove('hidden');
 
             try {
-                const response = await fetch('/jobs', {
-                    method: 'GET',
+                const response = await fetch('http://localhost:8080/jobs', {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`
                     }
@@ -154,7 +173,24 @@
             loadingMessage.classList.add('hidden');
         }
 
-        function displayJobs(jobs) {
+        async function fetchJobRatings(jobId) {
+            try {
+                const response = await fetch(`http://localhost:8080/jobs/ratings?job_id=${jobId}`);
+                const data = await response.json();
+                if (data.success) {
+                    return data.data;
+                }
+            } catch (e) { }
+            return { genuine: 0, scam: 0 };
+        }
+
+        async function fetchUserJobRating(jobId) {
+            // Optionally, you can implement a GET /jobs/rate?job_id=...&user_id=... endpoint for per-user rating
+            // For now, we will not show which button is selected
+            return null;
+        }
+
+        async function displayJobs(jobs) {
             const jobsContainer = document.getElementById('jobsContainer');
 
             if (jobs.length === 0) {
@@ -162,31 +198,75 @@
                 return;
             }
 
-            jobsContainer.innerHTML = jobs.map(job => `
-                <div class="bg-white shadow rounded-lg p-6">
+            // Clear container
+            jobsContainer.innerHTML = '';
+
+            for (const job of jobs) {
+                const ratings = await fetchJobRatings(job.id);
+                const jobCard = document.createElement('div');
+                jobCard.className = 'bg-white shadow-lg rounded-2xl p-8 border border-gray-100 mb-4';
+                jobCard.innerHTML = `
                     <div class="flex justify-between items-start">
                         <div class="flex-1">
-                            <h3 class="text-xl font-semibold text-gray-900">${job.title}</h3>
+                            <h3 class="text-xl font-semibold text-primary">${job.title}</h3>
                             <p class="text-lg text-gray-600 mt-1">${job.company}</p>
                             <p class="text-gray-500 mt-1">📍 ${job.location}</p>
                             ${job.salary_min && job.salary_max ?
-                    `<p class="text-gray-500 mt-1">💰 $${job.salary_min.toLocaleString()} - $${job.salary_max.toLocaleString()}</p>` :
-                    ''
-                }
+                        `<p class="text-gray-500 mt-1">💰 $${job.salary_min.toLocaleString()} - $${job.salary_max.toLocaleString()}</p>` :
+                        ''
+                    }
                             <p class="text-gray-700 mt-3">${job.description}</p>
                             <p class="text-sm text-gray-500 mt-2">Posted: ${new Date(job.created_at).toLocaleDateString()}</p>
                         </div>
-                        <button onclick="openApplicationModal(${job.id})" 
-                                class="ml-4 bg-primary text-white px-4 py-2 rounded-md hover:bg-secondary">
+                        <button onclick="openApplicationModal(${job.id})" class="ml-4 bg-gradient-to-r from-primary to-accent text-white px-4 py-2 rounded-lg hover:from-accent hover:to-primary transition">
                             Apply Now
                         </button>
                     </div>
-                </div>
-            `).join('');
+                    <div class="mt-4 flex items-center space-x-4">
+                        <span class="text-sm font-medium text-gray-700">Genuine: <span id="genuine-count-${job.id}" class="text-primary">${ratings.genuine}</span></span>
+                        <span class="text-sm font-medium text-gray-700">|</span>
+                        <span class="text-sm font-medium text-gray-700">Scam: <span id="scam-count-${job.id}" class="text-red-600">${ratings.scam}</span></span>
+                        <button onclick="rateJob(${job.id}, 'genuine')" class="ml-6 px-3 py-1 rounded bg-primary text-white hover:bg-accent transition text-sm flex items-center space-x-1">
+                            <span>👍</span><span>Mark as Genuine</span>
+                        </button>
+                        <button onclick="rateJob(${job.id}, 'scam')" class="px-3 py-1 rounded bg-red-500 text-white hover:bg-red-700 transition text-sm flex items-center space-x-1">
+                            <span>🚩</span><span>Mark as Scam</span>
+                        </button>
+                    </div>
+                `;
+                jobsContainer.appendChild(jobCard);
+            }
+        }
+
+        async function rateJob(jobId, rating) {
+            try {
+                const response = await fetch('http://localhost:8080/jobs/rate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify({ job_id: jobId, rating })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    // Refresh ratings for this job
+                    const ratings = await fetchJobRatings(jobId);
+                    document.getElementById(`genuine-count-${jobId}`).textContent = ratings.genuine;
+                    document.getElementById(`scam-count-${jobId}`).textContent = ratings.scam;
+                } else {
+                    alert(data.error || 'Failed to submit rating');
+                }
+            } catch (error) {
+                alert('Network error. Please try again.');
+            }
         }
 
         function openApplicationModal(jobId) {
             currentJobId = jobId;
+            // Pre-fill name and email from user info
+            document.getElementById('applicantName').value = currentUser.name || '';
+            document.getElementById('applicantEmail').value = currentUser.email || '';
             document.getElementById('applicationModal').classList.remove('hidden');
         }
 
@@ -199,17 +279,23 @@
         document.getElementById('applicationForm').addEventListener('submit', async function (e) {
             e.preventDefault();
 
+            const name = document.getElementById('applicantName').value;
+            const mobile = document.getElementById('applicantMobile').value;
+            const email = document.getElementById('applicantEmail').value;
             const coverLetter = document.getElementById('coverLetter').value;
             const resumeUrl = document.getElementById('resumeUrl').value;
 
             try {
-                const response = await fetch(`/jobs/apply?job_id=${currentJobId}`, {
+                const response = await fetch(`http://localhost:8080/jobs/apply?job_id=${currentJobId}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${localStorage.getItem('token')}`
                     },
                     body: JSON.stringify({
+                        name,
+                        mobile,
+                        email,
                         cover_letter: coverLetter,
                         resume_url: resumeUrl
                     })

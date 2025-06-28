@@ -45,8 +45,8 @@ func CreateJobHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Insert job into database
 	result, err := db.Exec(`
-		INSERT INTO jobs (title, description, company, location, salary_min, salary_max, recruiter_id)
-		VALUES (?, ?, ?, ?, ?, ?, ?)
+		INSERT INTO jobs (title, description, company, location, salary_min, salary_max, recruiter_id, disabled)
+		VALUES (?, ?, ?, ?, ?, ?, ?, 0)
 	`, req.Title, req.Description, req.Company, req.Location, req.SalaryMin, req.SalaryMax, userID)
 
 	if err != nil {
@@ -59,9 +59,9 @@ func CreateJobHandler(w http.ResponseWriter, r *http.Request) {
 	// Get the created job
 	var job models.Job
 	err = db.QueryRow(`
-		SELECT id, title, description, company, location, salary_min, salary_max, recruiter_id, created_at
+		SELECT id, title, description, company, location, salary_min, salary_max, recruiter_id, created_at, disabled
 		FROM jobs WHERE id = ?
-	`, jobID).Scan(&job.ID, &job.Title, &job.Description, &job.Company, &job.Location, &job.SalaryMin, &job.SalaryMax, &job.RecruiterID, &job.CreatedAt)
+	`, jobID).Scan(&job.ID, &job.Title, &job.Description, &job.Company, &job.Location, &job.SalaryMin, &job.SalaryMax, &job.RecruiterID, &job.CreatedAt, &job.Disabled)
 
 	if err != nil {
 		utils.WriteErrorResponse(w, http.StatusInternalServerError, "Failed to retrieve job")
@@ -74,7 +74,7 @@ func CreateJobHandler(w http.ResponseWriter, r *http.Request) {
 // listJobsHandler handles job listing
 func ListJobsHandler(w http.ResponseWriter, r *http.Request) {
 	rows, err := db.Query(`
-		SELECT id, title, description, company, location, salary_min, salary_max, recruiter_id, created_at
+		SELECT id, title, description, company, location, salary_min, salary_max, recruiter_id, created_at, disabled
 		FROM jobs
 		ORDER BY created_at DESC
 	`)
@@ -87,7 +87,7 @@ func ListJobsHandler(w http.ResponseWriter, r *http.Request) {
 	var jobs []models.Job
 	for rows.Next() {
 		var job models.Job
-		err := rows.Scan(&job.ID, &job.Title, &job.Description, &job.Company, &job.Location, &job.SalaryMin, &job.SalaryMax, &job.RecruiterID, &job.CreatedAt)
+		err := rows.Scan(&job.ID, &job.Title, &job.Description, &job.Company, &job.Location, &job.SalaryMin, &job.SalaryMax, &job.RecruiterID, &job.CreatedAt, &job.Disabled)
 		if err != nil {
 			utils.WriteErrorResponse(w, http.StatusInternalServerError, "Failed to scan job")
 			return
@@ -320,6 +320,128 @@ func UpdateApplicationHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	utils.WriteSuccessResponse(w, map[string]string{"message": "Application status updated successfully"})
+}
+
+// RateJobHandler allows a user to rate a job as 'genuine' or 'scam'
+func RateJobHandler(w http.ResponseWriter, r *http.Request) {
+	userID, err := getUserIDFromRequest(r)
+	if err != nil {
+		utils.WriteErrorResponse(w, http.StatusUnauthorized, "Authentication required")
+		return
+	}
+
+	var req struct {
+		JobID  int    `json:"job_id"`
+		Rating string `json:"rating"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		utils.WriteErrorResponse(w, http.StatusBadRequest, "Invalid request body")
+		return
+	}
+	if req.Rating != "genuine" && req.Rating != "scam" {
+		utils.WriteErrorResponse(w, http.StatusBadRequest, "Rating must be 'genuine' or 'scam'")
+		return
+	}
+	// Upsert rating
+	_, err = db.Exec(`INSERT INTO job_ratings (job_id, user_id, rating) VALUES (?, ?, ?)
+		ON CONFLICT(job_id, user_id) DO UPDATE SET rating=excluded.rating`, req.JobID, userID, req.Rating)
+	if err != nil {
+		utils.WriteErrorResponse(w, http.StatusInternalServerError, "Failed to rate job")
+		return
+	}
+	utils.WriteSuccessResponse(w, map[string]string{"message": "Rating submitted"})
+}
+
+// GetJobRatingsHandler returns the count of 'genuine' and 'scam' ratings for a job
+func GetJobRatingsHandler(w http.ResponseWriter, r *http.Request) {
+	jobIDStr := r.URL.Query().Get("job_id")
+	if jobIDStr == "" {
+		utils.WriteErrorResponse(w, http.StatusBadRequest, "Job ID is required")
+		return
+	}
+	jobID, err := strconv.Atoi(jobIDStr)
+	if err != nil {
+		utils.WriteErrorResponse(w, http.StatusBadRequest, "Invalid job ID")
+		return
+	}
+	var genuineCount, scamCount int
+	db.QueryRow(`SELECT COUNT(*) FROM job_ratings WHERE job_id = ? AND rating = 'genuine'`, jobID).Scan(&genuineCount)
+	db.QueryRow(`SELECT COUNT(*) FROM job_ratings WHERE job_id = ? AND rating = 'scam'`, jobID).Scan(&scamCount)
+	utils.WriteSuccessResponse(w, map[string]int{"genuine": genuineCount, "scam": scamCount})
+}
+
+// DisableJobHandler toggles the disabled state of a job
+func DisableJobHandler(w http.ResponseWriter, r *http.Request) {
+	userID, err := getUserIDFromRequest(r)
+	if err != nil {
+		utils.WriteErrorResponse(w, http.StatusUnauthorized, "Authentication required")
+		return
+	}
+	jobIDStr := r.URL.Query().Get("id")
+	if jobIDStr == "" {
+		utils.WriteErrorResponse(w, http.StatusBadRequest, "Job ID is required")
+		return
+	}
+	jobID, err := strconv.Atoi(jobIDStr)
+	if err != nil {
+		utils.WriteErrorResponse(w, http.StatusBadRequest, "Invalid job ID")
+		return
+	}
+	// Check if the user is the recruiter for this job
+	var recruiterID int
+	err = db.QueryRow("SELECT recruiter_id FROM jobs WHERE id = ?", jobID).Scan(&recruiterID)
+	if err != nil {
+		utils.WriteErrorResponse(w, http.StatusNotFound, "Job not found")
+		return
+	}
+	if recruiterID != userID {
+		utils.WriteErrorResponse(w, http.StatusForbidden, "You are not authorized to disable this job")
+		return
+	}
+	// Toggle the disabled state
+	_, err = db.Exec("UPDATE jobs SET disabled = NOT disabled WHERE id = ?", jobID)
+	if err != nil {
+		utils.WriteErrorResponse(w, http.StatusInternalServerError, "Failed to update job status")
+		return
+	}
+	utils.WriteSuccessResponse(w, map[string]interface{}{"job_id": jobID, "disabled_toggled": true})
+}
+
+// DeleteJobHandler deletes a job
+func DeleteJobHandler(w http.ResponseWriter, r *http.Request) {
+	userID, err := getUserIDFromRequest(r)
+	if err != nil {
+		utils.WriteErrorResponse(w, http.StatusUnauthorized, "Authentication required")
+		return
+	}
+	jobIDStr := r.URL.Query().Get("id")
+	if jobIDStr == "" {
+		utils.WriteErrorResponse(w, http.StatusBadRequest, "Job ID is required")
+		return
+	}
+	jobID, err := strconv.Atoi(jobIDStr)
+	if err != nil {
+		utils.WriteErrorResponse(w, http.StatusBadRequest, "Invalid job ID")
+		return
+	}
+	// Check if the user is the recruiter for this job
+	var recruiterID int
+	err = db.QueryRow("SELECT recruiter_id FROM jobs WHERE id = ?", jobID).Scan(&recruiterID)
+	if err != nil {
+		utils.WriteErrorResponse(w, http.StatusNotFound, "Job not found")
+		return
+	}
+	if recruiterID != userID {
+		utils.WriteErrorResponse(w, http.StatusForbidden, "You are not authorized to delete this job")
+		return
+	}
+	// Delete the job
+	_, err = db.Exec("DELETE FROM jobs WHERE id = ?", jobID)
+	if err != nil {
+		utils.WriteErrorResponse(w, http.StatusInternalServerError, "Failed to delete job")
+		return
+	}
+	utils.WriteSuccessResponse(w, map[string]interface{}{"job_id": jobID, "deleted": true})
 }
 
 // Helper function to get user ID from request (simplified)
