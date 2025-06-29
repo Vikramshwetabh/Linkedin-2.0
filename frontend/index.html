@@ -39,9 +39,10 @@
     <main class="flex-1 flex flex-col md:flex-row items-center justify-between max-w-7xl mx-auto w-full px-8 py-8">
         <!-- Left: Text in a Box -->
         <div class="w-full md:w-1/2 flex flex-col justify-center items-center">
-            <div class="bg-primary rounded-3xl p-3 md:p-6 w-full max-w-2xl">
-                <div
-                    class="bg-white rounded-2xl shadow-xl p-10 md:p-14 flex flex-col items-start space-y-8 w-full border border-gray-200">
+            <div class="relative w-full max-w-2xl">
+                <div class="absolute -top-3 -left-3 w-full h-full bg-primary rounded-tl-2xl" style="z-index:1;"></div>
+                <div class="relative bg-white rounded-2xl shadow-xl p-10 md:p-14 flex flex-col items-start space-y-8 w-full border border-gray-200"
+                    style="z-index:2;">
                     <h1 class="text-5xl md:text-6xl font-extrabold text-dark leading-tight">Job Clarity<br>You Can Trust
                     </h1>
                     <p class="text-lg text-dark/80">Trusted job guidance for every stage of life and business since 2025
