@@ -23,13 +23,14 @@ func main() {
 	// Setup router
 	r := http.NewServeMux()
 
-	// CORS middleware
+	// Apply CORS middleware to all routes
 	r.HandleFunc("/", corsMiddleware(http.HandlerFunc(handleRoutes)))
 
 	log.Println("Server starting on :8080")
 	log.Fatal(http.ListenAndServe(":8080", r))
 }
 
+// CORS middleware allows cross-origin requests from the frontend
 func corsMiddleware(next http.Handler) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -62,6 +63,14 @@ func handleRoutes(w http.ResponseWriter, r *http.Request) {
 		handlers.GetJobApplicationsHandler(w, r)
 	case r.URL.Path == "/applications/update" && r.Method == "PATCH":
 		handlers.UpdateApplicationHandler(w, r)
+	case r.URL.Path == "/jobs/rate" && r.Method == "POST":
+		handlers.RateJobHandler(w, r)
+	case r.URL.Path == "/jobs/ratings" && r.Method == "GET":
+		handlers.GetJobRatingsHandler(w, r)
+	case r.URL.Path == "/jobs/disable" && r.Method == "PATCH":
+		handlers.DisableJobHandler(w, r)
+	case r.URL.Path == "/jobs" && r.Method == "DELETE":
+		handlers.DeleteJobHandler(w, r)
 	default:
 		// Serve static files
 		http.FileServer(http.Dir("../frontend")).ServeHTTP(w, r)
@@ -107,6 +116,7 @@ func createTables() {
 			salary_max INTEGER,
 			recruiter_id INTEGER NOT NULL,
 			created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+			disabled BOOLEAN NOT NULL DEFAULT 0,
 			FOREIGN KEY (recruiter_id) REFERENCES users (id)
 		)
 	`)
@@ -126,6 +136,22 @@ func createTables() {
 			applied_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 			FOREIGN KEY (job_id) REFERENCES jobs (id),
 			FOREIGN KEY (applicant_id) REFERENCES users (id)
+		)
+	`)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Job Ratings table
+	_, err = db.Exec(`
+		CREATE TABLE IF NOT EXISTS job_ratings (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			job_id INTEGER NOT NULL,
+			user_id INTEGER NOT NULL,
+			rating TEXT NOT NULL CHECK(rating IN ('genuine', 'scam')),
+			UNIQUE(job_id, user_id),
+			FOREIGN KEY (job_id) REFERENCES jobs (id),
+			FOREIGN KEY (user_id) REFERENCES users (id)
 		)
 	`)
 	if err != nil {

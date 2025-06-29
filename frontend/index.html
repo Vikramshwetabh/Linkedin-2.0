@@ -37,22 +37,24 @@
     </nav>
     <!-- Main Content -->
     <main class="flex-1 flex flex-col md:flex-row items-center justify-between max-w-7xl mx-auto w-full px-8 py-8">
-        <!-- Left: Magnifying Glass Image with Gradient Background -->
-        <div
-            class="w-full md:w-1/2 flex justify-center items-center mt-12 md:mt-0 bg-gradient-to-br from-primary via-accent to-primary h-full rounded-3xl md:rounded-none md:rounded-l-3xl">
-            <img src="assets/magnifier-code.png" alt="Magnifying glass with code"
-                class="max-w-xs md:max-w-md w-full h-auto rounded-2xl shadow-lg object-cover" />
-        </div>
-        <!-- Right: Text in a Box -->
+        <!-- Left: Text in a Box -->
         <div class="w-full md:w-1/2 flex flex-col justify-center items-center">
-            <div
-                class="bg-white rounded-3xl shadow-xl p-10 md:p-14 flex flex-col items-start space-y-8 w-full max-w-xl border border-gray-200">
-                <h1 class="text-5xl md:text-6xl font-extrabold text-dark leading-tight">Job Clarity<br>You Can Trust
-                </h1>
-                <p class="text-lg text-dark/80">Trusted job guidance for every stage of life and business since 2025</p>
-                <a href="login.html"
-                    class="bg-primary text-white px-7 py-3 rounded-full font-semibold text-lg shadow hover:bg-accent transition">Login</a>
+            <div class="bg-primary rounded-3xl p-2 md:p-4 w-full max-w-xl">
+                <div
+                    class="bg-white rounded-2xl shadow-xl p-10 md:p-14 flex flex-col items-start space-y-8 w-full border border-gray-200">
+                    <h1 class="text-5xl md:text-6xl font-extrabold text-dark leading-tight">Job Clarity<br>You Can Trust
+                    </h1>
+                    <p class="text-lg text-dark/80">Trusted job guidance for every stage of life and business since 2025
+                    </p>
+                    <a href="login.html"
+                        class="bg-primary text-white px-7 py-3 rounded-full font-semibold text-lg shadow hover:bg-accent transition">Login</a>
+                </div>
             </div>
+        </div>
+        <!-- Right: Magnifying Glass Image (no gradient bar) -->
+        <div class="w-full md:w-1/2 flex justify-center items-center mt-12 md:mt-0 relative">
+            <img src="assets/magnifier-code.png" alt="Magnifying glass with code"
+                class="relative z-10 max-w-xs md:max-w-md w-full h-auto rounded-2xl shadow-lg object-cover" />
         </div>
     </main>
 </body>
