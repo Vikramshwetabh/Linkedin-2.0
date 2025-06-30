@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | Jobber</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        accent: '#818cf8',
+                        light: '#f8fafc',
+                        graybg: '#f3f4f6',
+                        dark: '#18181b'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-light min-h-screen flex flex-col">
+    <!-- Top Navigation -->
+    <nav class="flex justify-between items-center px-8 py-6 relative">
+        <div class="flex-1 flex justify-center">
+            <div class="text-3xl md:text-5xl font-extrabold text-dark text-center">Jobber</div>
+        </div>
+        <div class="absolute right-8 top-1/2 -translate-y-1/2 flex items-center space-x-4">
+            <a href="about.html"
+                class="text-dark hover:text-primary font-medium bg-primary/10 px-4 py-2 rounded-full">About</a>
+            <a href="register.html"
+                class="bg-primary text-white px-5 py-2 rounded-full font-medium hover:bg-accent transition">Sign Up</a>
+        </div>
+    </nav>
+    <!-- About Content -->
+    <main class="flex-1 flex flex-col items-center justify-center max-w-3xl mx-auto w-full px-8 py-12">
+        <h1 class="text-4xl md:text-5xl font-extrabold text-dark mb-6">About Jobber</h1>
+        <p class="text-lg text-dark/80 mb-4">
+            Jobber is your trusted partner for job clarity and career guidance. Since 2025, we have been committed to
+            helping individuals and businesses navigate the ever-changing job market with confidence and clarity.
+        </p>
+        <p class="text-lg text-dark/80 mb-4">
+            Our platform provides reliable resources, expert advice, and a supportive community to empower you at every
+            stage of your professional journey.
+        </p>
+        <p class="text-lg text-dark/80">
+            Whether you're seeking your first job, making a career change, or growing your business, Jobber is here to
+            support you every step of the way.
+        </p>
+        <a href="index.html"
+            class="mt-8 inline-block bg-primary text-white px-6 py-3 rounded-full font-semibold hover:bg-accent transition">Back
+            to Home</a>
+    </main>
+</body>
+
+</html>
