@@ -37,7 +37,7 @@ func corsMiddleware(next http.Handler) http.HandlerFunc {
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
-		if r.Method == "OPTIONS" {
+		if r.Method == "OPTIONS" { //
 			w.WriteHeader(http.StatusOK)
 			return
 		}
