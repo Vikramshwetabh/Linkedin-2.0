@@ -26,8 +26,8 @@ func main() {
 	// Apply CORS middleware to all routes
 	r.HandleFunc("/", corsMiddleware(http.HandlerFunc(handleRoutes)))
 
-	log.Println("Server starting on :8080") //print the server starting message
-	log.Fatal(http.ListenAndServe(":8080", r))
+	log.Println("Server starting on :8080")    //print the server starting message
+	log.Fatal(http.ListenAndServe(":8080", r)) //print the error if any occurs while starting the server
 }
 
 // CORS middleware allows cross-origin requests from the frontend
