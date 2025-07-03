@@ -15,18 +15,18 @@ var db *sql.DB
 func main() {
 	// Initialize database
 	initDB()
-	defer db.Close()
+	defer db.Close() //
 
 	// Set database connection for handlers
 	handlers.SetDB(db)
 
 	// Setup router
-	r := http.NewServeMux()
+	r := http.NewServeMux() //
 
 	// Apply CORS middleware to all routes
 	r.HandleFunc("/", corsMiddleware(http.HandlerFunc(handleRoutes)))
 
-	log.Println("Server starting on :8080")
+	log.Println("Server starting on :8080") //print the server starting message
 	log.Fatal(http.ListenAndServe(":8080", r))
 }
 
