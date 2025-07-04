@@ -55,7 +55,7 @@ func CreateJobHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	jobID, _ := result.LastInsertId()
+	jobID, _ := result.LastInsertId() // Get the last inserted job ID
 
 	// Get the created job
 	var job models.Job
