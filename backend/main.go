@@ -49,9 +49,9 @@ func corsMiddleware(next http.Handler) http.HandlerFunc {
 func handleRoutes(w http.ResponseWriter, r *http.Request) {
 	// Simple routing without external router
 	switch {
-	case r.URL.Path == "/register" && r.Method == "POST":
+	case r.URL.Path == "/register" && r.Method == "POST": // Register a new user
 		handlers.RegisterHandler(w, r)
-	case r.URL.Path == "/login" && r.Method == "POST":
+	case r.URL.Path == "/login" && r.Method == "POST": // Login an existing user
 		handlers.LoginHandler(w, r)
 	case r.URL.Path == "/jobs" && r.Method == "POST":
 		handlers.CreateJobHandler(w, r)
