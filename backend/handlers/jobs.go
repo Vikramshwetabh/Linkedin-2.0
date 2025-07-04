@@ -26,12 +26,13 @@ func CreateJobHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if userRole != "recruiter" {
+	if userRole != "recruiter" { // Check if user is a recruiter
+		// If not a recruiter, return forbidden
 		utils.WriteErrorResponse(w, http.StatusForbidden, "Only recruiters can create jobs")
 		return
 	}
 
-	var req models.CreateJobRequest
+	var req models.CreateJobRequest // Decode request body into CreateJobRequest struct
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		utils.WriteErrorResponse(w, http.StatusBadRequest, "Invalid request body")
 		return
