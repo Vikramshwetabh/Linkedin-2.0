@@ -9,7 +9,7 @@ import (
 	"verified-job-platform/utils"
 )
 
-// createJobHandler handles job creation
+// create JobHandler handles job creation
 func CreateJobHandler(w http.ResponseWriter, r *http.Request) {
 	// Get user ID from token (simplified authentication)
 	userID, err := getUserIDFromRequest(r)
