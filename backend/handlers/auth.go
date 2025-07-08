@@ -49,7 +49,7 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		VALUES (?, ?, ?, ?)
 	`, req.Email, hashedPassword, req.Name, req.Role)
 
-	if err != nil {
+	if err != nil { // handle unique constraint error
 		if strings.Contains(err.Error(), "UNIQUE constraint failed") {
 			utils.WriteErrorResponse(w, http.StatusConflict, "Email already exists")
 			return
