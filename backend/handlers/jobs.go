@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"encoding/json"
+	"encoding/json" //use for encoding json
 	"net/http"
 	"strconv"
 
