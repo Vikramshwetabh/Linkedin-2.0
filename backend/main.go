@@ -53,7 +53,7 @@ func handleRoutes(w http.ResponseWriter, r *http.Request) {
 		handlers.RegisterHandler(w, r)
 	case r.URL.Path == "/login" && r.Method == "POST": // Login an existing user
 		handlers.LoginHandler(w, r)
-	case r.URL.Path == "/jobs" && r.Method == "POST":
+	case r.URL.Path == "/jobs" && r.Method == "POST": // Create a new job
 		handlers.CreateJobHandler(w, r)
 	case r.URL.Path == "/jobs" && r.Method == "GET":
 		handlers.ListJobsHandler(w, r)
