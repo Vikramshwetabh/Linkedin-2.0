@@ -2,8 +2,8 @@ package handlers
 
 import (
 	"encoding/json" //use for encoding json
-	"net/http"
-	"strconv"
+	"net/http"      //use for http requests
+	"strconv"       //use for converting strings to integers
 
 	"verified-job-platform/models"
 	"verified-job-platform/utils"
