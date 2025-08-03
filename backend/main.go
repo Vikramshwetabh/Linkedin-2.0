@@ -61,7 +61,7 @@ func handleRoutes(w http.ResponseWriter, r *http.Request) {
 		handlers.ApplyJobHandler(w, r)
 	case r.URL.Path == "/jobs/applications" && r.Method == "GET": // Get job applications for a recruiter
 		handlers.GetJobApplicationsHandler(w, r)
-	case r.URL.Path == "/applications/update" && r.Method == "PATCH":
+	case r.URL.Path == "/applications/update" && r.Method == "PATCH": // Update application status
 		handlers.UpdateApplicationHandler(w, r)
 	case r.URL.Path == "/jobs/rate" && r.Method == "POST":
 		handlers.RateJobHandler(w, r)
