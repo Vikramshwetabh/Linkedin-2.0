@@ -55,7 +55,7 @@ func handleRoutes(w http.ResponseWriter, r *http.Request) {
 		handlers.LoginHandler(w, r)
 	case r.URL.Path == "/jobs" && r.Method == "POST": // Create a new job
 		handlers.CreateJobHandler(w, r)
-	case r.URL.Path == "/jobs" && r.Method == "GET": // List all jobs
+	case r.URL.Path == "/jobs" && r.Method == "GET":
 		handlers.ListJobsHandler(w, r)
 	case r.URL.Path == "/jobs/apply" && r.Method == "POST": //apply for a job
 		handlers.ApplyJobHandler(w, r)
@@ -67,7 +67,7 @@ func handleRoutes(w http.ResponseWriter, r *http.Request) {
 		handlers.RateJobHandler(w, r)
 	case r.URL.Path == "/jobs/ratings" && r.Method == "GET": // Get job ratings
 		handlers.GetJobRatingsHandler(w, r)
-	case r.URL.Path == "/jobs/disable" && r.Method == "PATCH":
+	case r.URL.Path == "/jobs/disable" && r.Method == "PATCH": //disable the job
 		handlers.DisableJobHandler(w, r)
 	case r.URL.Path == "/jobs" && r.Method == "DELETE":
 		handlers.DeleteJobHandler(w, r)
